@@ -1,6 +1,7 @@
 ## Mirror joints for proper characterization
 ## Paulo Scatena - http://scatena.tv
-## September 2016
+## Created: September 2015
+## Modified: March 2017
 
 from pyfbsdk import FBApplication, FBMessageBox, FBVector3d, FBModelTransformationType
 
@@ -25,10 +26,18 @@ def listLinks(lChar):
 
 #Mirroring the joints from one side to the other
 def mirrorJoints(srcList,dstList):
+    
+    # Open Undo Stack
+    lUndo = FBUndoManager()  
+    lUndo.TransactionBegin("mirror")
+    
     #Empty vector to store rotation
     lRotation = FBVector3d()
     for i in range(len(srcList)):
         if len(srcList[i]):
+            # Add Model TRS in Undo Stack
+            lUndo.TransactionAddModelTRS(dstList[i][0])
+            #Get vector
             srcList[i][0].GetVector (lRotation, FBModelTransformationType.kModelRotation)
             #Making adjustments to the values
             if lRotation[0] > 90:
@@ -42,6 +51,9 @@ def mirrorJoints(srcList,dstList):
             #Setting the values for the corresponding opposite link
             dstList[i][0].SetVector (lRotation,
             FBModelTransformationType.kModelRotation, True)
+
+    # Close Undo Stack
+    lUndo.TransactionEnd()
 
 
 ## Calling the functions ##
@@ -66,6 +78,9 @@ if lChar:
         lLeftList = lFilteredTuple[0]
         lRightList = lFilteredTuple[1]
 
+
+
+
     if lDirection == 1:
         #Left to right
         mirrorJoints(lLeftList,lRightList)
@@ -73,6 +88,8 @@ if lChar:
     if lDirection == 2:
         #Right to left
         mirrorJoints(lRightList,lLeftList)
+
+
 
 # Cleanup.
 del( FBApplication, FBMessageBox, FBVector3d, FBModelTransformationType )
