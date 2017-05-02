@@ -1,12 +1,17 @@
 # Mirror joints tool
 
 Script for mirroring the joints of a character for faster adjustments during characterization.
+
 It simply replicates the pose on one side to the other.
+
+Demonstration video: https://vimeo.com/194746296
 
 ## Instructions
 
 There is one prerequisite: having a character defined (not locked) under Character Controls.
+
 Character to be modified must be the current active one.
+
 Just run the tool and select the direction you want (left to  right or right to left).
 
 ## Installation
