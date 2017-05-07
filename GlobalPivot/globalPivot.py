@@ -4,6 +4,7 @@
 ## Modified: May 2017
 
 from pyfbsdk import *
+from pyfbsdk_additions import *
 
 ## Helper Functions
 
